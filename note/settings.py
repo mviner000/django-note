@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,10 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-=x46_=i0c*3t_wwy%#0uuq)%o%o^g5@ev6+x6v_(bff-wcg$sn'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Load environment variables from .env file
+load_dotenv()
 
-ALLOWED_HOSTS = ["gjclibrary.com"]
+# Set debug mode based on environment
+DEBUG = os.getenv('DEBUG') == 'True'
+
+# Set allowed hosts based on environment
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
 
 # Application definition
