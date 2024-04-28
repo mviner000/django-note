@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-=x46_=i0c*3t_wwy%#0uuq)%o%o^g5@ev6+x6v_(bff-wcg$sn
 # Load environment variables from .env file
 load_dotenv()
 
-# Set debug mode based on environment
-DEBUG = os.getenv('DEBUG') == 'True'
+# Determine whether debug mode is enabled
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 # Set allowed hosts based on environment
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
@@ -82,16 +82,25 @@ WSGI_APPLICATION = 'note.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+# Define the database settings
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST'),
+            'PORT': os.getenv('DB_PORT'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
