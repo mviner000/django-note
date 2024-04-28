@@ -31,3 +31,9 @@ venv/
 
 # macOS
 .DS_Store
+
+# Newly added files
+modified: .env
+modified: db.sqlite3
+modified: note/__pycache__/settings.cpython-310.pyc
+modified: note/__pycache__/urls.cpython-310.pyc
