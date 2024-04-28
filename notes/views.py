@@ -1,6 +1,10 @@
 from rest_framework import generics
 from .models import Note
 from .serializers import NoteSerializer
+from django.shortcuts import render
+
+def index(request):
+    return render(request, 'index.html')
 
 # Create your views here.
 class NoteListCreateAPIView(generics.ListCreateAPIView):

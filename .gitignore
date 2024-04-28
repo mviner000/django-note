@@ -19,6 +19,7 @@ venv/
 
 # Static files
 /staticfiles/
+/assets/
 
 # Media files
 /media/
@@ -34,3 +35,5 @@ venv/
 
 # Exclude all __pycache__ directories and their contents
 **/__pycache__/
+note/__pycache__/settings.cpython-312.pyc
+note/__pycache__/urls.cpython-312.pyc
