@@ -15,8 +15,6 @@ venv/
 .vscode/
 
 # Database
-*.sqlite3
-db.sqlite3
 
 # Static files
 /staticfiles/
