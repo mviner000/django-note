@@ -36,3 +36,6 @@ venv/
 **/__pycache__/
 note/__pycache__/settings.cpython-312.pyc
 note/__pycache__/urls.cpython-312.pyc
+note/__pycache__/settings.cpython-310.pyc
+note/__pycache__/urls.cpython-310.pyc
+notes/templates/index.html

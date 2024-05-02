@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books API Routes</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Books API Routes</h2>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>HTTP Method</th>
+                    <th>Endpoint</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GET</td>
+                    <td>{{ hostname }}/api/books/</td>
+                    <td>Retrieve a list of all books</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>{{ hostname }}/api/books/</td>
+                    <td>Create a new book entry</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>{{ hostname }}/api/books/{id}/</td>
+                    <td>Retrieve details of a specific book</td>
+                </tr>
+                <tr>
+                    <td>PUT</td>
+                    <td>{{ hostname }}/api/books/{id}/</td>
+                    <td>Update details of a specific book (replace)</td>
+                </tr>
+                <tr>
+                    <td>PATCH</td>
+                    <td>{{ hostname }}/api/books/{id}/</td>
+                    <td>Update details of a specific book (partial)</td>
+                </tr>
+                <tr>
+                    <td>DELETE</td>
+                    <td>{{ hostname }}/api/books/{id}/</td>
+                    <td>Delete a specific book</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
