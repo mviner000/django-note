@@ -45,4 +45,4 @@ def book_list(request):
         # If page is out of range (e.g., 9999), deliver last page of results.
         books = paginator.page(paginator.num_pages)
 
-    return render(request, 'book_list.html', {'books': books})
+    return render(request, 'index.html', {'books': books})
