@@ -22,7 +22,7 @@ class Book(models.Model):
     aeauthor2_code = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True, related_name='aeauthor2_books', db_column='aeauthor2_code')
     aeauthor3_code = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True, related_name='aeauthor3_books', db_column='aeauthor3_code')
     allno = models.CharField(max_length=255, blank=True, null=True)
-    thumbnail_url = models.URLField(max_length=500, blank=True, null=True)
+    thumbnail_url = models.ImageField(upload_to='book_thumbnails/', blank=True, null=True)
     thumbnail_width = models.PositiveIntegerField(blank=True, null=True)
     thumbnail_height = models.PositiveIntegerField(blank=True, null=True)
 

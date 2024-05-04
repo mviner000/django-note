@@ -66,7 +66,9 @@ ROOT_URLCONF = 'note.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'book/templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -159,3 +161,6 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 # STATIC_ROOT = '/home/gjclibrary/public_html/static/'
+
+MEDIA_URL = ''
+MEDIA_ROOT = os.path.join(BASE_DIR, '')

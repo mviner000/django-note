@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book List</title>
+</head>
+<body>
+    <h1>Book List</h1>
+
+    {% if books %}
+        <ul>
+            {% for book in books %}
+                <li>
+                    <strong>{{ book.title }}</strong><br>
+                    {% if book.thumbnail_url %}
+                        <img src="{{ book.thumbnail_url }}" alt="{{ book.title }} Thumbnail" style="max-width: 200px; max-height: 200px;">
+                    {% else %}
+                        <p>No thumbnail available for this book.</p>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Pagination Links -->
+        {% if books.has_previous %}
+            <a href="?page=1">First</a>
+            <a href="?page={{ books.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        Page {{ books.number }} of {{ books.paginator.num_pages }}
+
+        {% if books.has_next %}
+            <a href="?page={{ books.next_page_number }}">Next</a>
+            <a href="?page={{ books.paginator.num_pages }}">Last</a>
+        {% endif %}
+    {% else %}
+        <p>No books available.</p>
+    {% endif %}
+</body>
+</html>

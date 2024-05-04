@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 import os
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Book
 from .serializers import BookSerializer
 
@@ -21,3 +22,27 @@ def api_view(request):
 
     # Render the template with the HOSTNAME variable
     return render(request, 'rest_framework/api.html', {'hostname': hostname})
+
+def book_detail(request, book_id):
+    # Retrieve the book object using its ID
+    book = get_object_or_404(Book, pk=book_id)
+
+    # Render the book_detail.html template with the book object
+    return render(request, 'book_detail.html', {'book': book})
+
+def book_list(request):
+    book_list = Book.objects.all().order_by('title')
+
+    paginator = Paginator(book_list, 10)  # Show 10 books per page
+    page = request.GET.get('page')
+
+    try:
+        books = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        books = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver last page of results.
+        books = paginator.page(paginator.num_pages)
+
+    return render(request, 'book_list.html', {'books': books})

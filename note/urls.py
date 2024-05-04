@@ -18,12 +18,16 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include 
 from notes.views import index
+from book.views import book_list
 from django.conf.urls.static import static
 
-urlpatterns = [ 
-    path('', index, name='index'), 
+urlpatterns = [
+    path('', index, name='index'),
     path('admin/', admin.site.urls),
     path('api/', include('notes.urls')),
     path('api/', include('book.urls')),
-    path('api/', include('author.urls')), 
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('api/', include('author.urls')),
+    # Add a direct route to the book list page
+    path('list/', book_list, name='book_list'),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
+  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

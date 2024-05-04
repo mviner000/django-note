@@ -23,4 +23,4 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author_code', 'author_name', 'subject1_code', 'subject_name']  # Update fields to include 'author_name'
+        fields = ['id', 'title', 'author_code', 'author_name', 'subject1_code', 'subject_name', 'thumbnail_url', 'publisher', 'pubplace', 'pagination', 'edition']  # Update fields to include 'author_name'

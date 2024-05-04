@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ book.title }}</title>
+</head>
+<body>
+    <h1>{{ book.title }}</h1>
+    {% if book.thumbnail_url %}
+        <table>
+            <tr>
+                <td>
+                    <img src="{{ book.thumbnail_url }}" 
+                         alt="{{ book.title }} Thumbnail"
+                         width="{{ book.thumbnail_width }}"
+                         height="{{ book.thumbnail_height }}">
+                </td>
+                <td>
+                    <p><strong>Author:</strong> {{ book.author_code.name }}</p>
+                    <p><strong>Edition:</strong> {{ book.edition }}</p>
+                    <p><strong>Publisher:</strong> {{ book.publisher }}</p>
+                    <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+                    <!-- Add more details as needed -->
+                </td>
+            </tr>
+        </table>
+    {% else %}
+        <p>No thumbnail available for this book.</p>
+    {% endif %}
+</body>
+</html>
