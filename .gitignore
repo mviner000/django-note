@@ -18,7 +18,6 @@ venv/
 
 # Static files
 /staticfiles/
-/assets/
 
 # Media files
 /media/
