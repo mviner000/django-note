@@ -25,4 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('notes.urls')),
     path('api/', include('book.urls')),
+    path('api/', include('author.urls')), 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

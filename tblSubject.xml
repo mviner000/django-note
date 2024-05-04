@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataroot xmlns:od="urn:schemas-microsoft-com:officedata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="tblSubject.xsd" generated="2024-05-02T19:20:16">
 <tblSubject>
+<subject>Mabeza</subject>
+<SubjectCode>0</SubjectCode>
+</tblSubject>
+<tblSubject>
+<subject>De Asis</subject>
+<SubjectCode>9999</SubjectCode>
+</tblSubject>
+<tblSubject>
 <subject>Library information&apos;s systems</subject>
 <SubjectCode>1</SubjectCode>
 </tblSubject>

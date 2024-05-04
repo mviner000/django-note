@@ -1,5 +1,6 @@
 from django.db import models
 from author.models import Author
+from subject.models import Subject
 
 class Book(models.Model):
     id = models.AutoField(primary_key=True)
@@ -12,15 +13,18 @@ class Book(models.Model):
     pubplace = models.CharField(max_length=255, blank=True, null=True)
     copyright = models.CharField(max_length=255, blank=True, null=True)
     isbn = models.CharField(max_length=255, blank=True, null=True)
-    subject1_code = models.CharField(max_length=255, blank=True, null=True)
-    subject2_code = models.CharField(max_length=255, blank=True, null=True)
-    subject3_code = models.CharField(max_length=255, blank=True, null=True)
+    subject1_code = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True, related_name='books_subject1', db_column='subject1_code')
+    subject2_code = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True, related_name='books_subject2', db_column='subject2_code')
+    subject3_code = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True, related_name='books_subject3', db_column='subject3_code')
     series_title = models.CharField(max_length=255, blank=True, null=True)
     aentrytitle = models.CharField(max_length=255, blank=True, null=True)
     aeauthor1_code = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True, related_name='aeauthor1_books', db_column='aeauthor1_code')
     aeauthor2_code = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True, related_name='aeauthor2_books', db_column='aeauthor2_code')
     aeauthor3_code = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True, related_name='aeauthor3_books', db_column='aeauthor3_code')
     allno = models.CharField(max_length=255, blank=True, null=True)
+    thumbnail_url = models.URLField(max_length=500, blank=True, null=True)
+    thumbnail_width = models.PositiveIntegerField(blank=True, null=True)
+    thumbnail_height = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         db_table = 'book_book'

@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 import xml.etree.ElementTree as ET
 
@@ -11,46 +12,11 @@ def create_connection(db_file):
         print(e)
     return conn
 
-def create_tables(conn):
-    """ Create necessary tables in the database if they do not exist """
-    sql_create_authors_table = """CREATE TABLE IF NOT EXISTS author_author (
-                                    id INTEGER PRIMARY KEY,
-                                    author_name TEXT NOT NULL,
-                                    author_code TEXT NOT NULL UNIQUE
-                                );"""
-    sql_create_subject_table = """CREATE TABLE IF NOT EXISTS subject_subject (
-                                    id INTEGER PRIMARY KEY,
-                                    subject_name TEXT NOT NULL,
-                                    subject_code TEXT NOT NULL UNIQUE
-                                );"""
-    sql_create_book_table = """CREATE TABLE IF NOT EXISTS book_book (
-                                    id INTEGER PRIMARY KEY,
-                                    controlno TEXT NOT NULL,
-                                    title TEXT NOT NULL,
-                                    author_code TEXT NOT NULL,
-                                    edition TEXT,
-                                    pagination TEXT,
-                                    publisher TEXT,
-                                    pubplace TEXT,
-                                    copyright TEXT,
-                                    isbn TEXT,
-                                    subject1_code TEXT,
-                                    subject2_code TEXT,
-                                    subject3_code TEXT,
-                                    series_title TEXT,
-                                    aentrytitle TEXT,
-                                    aeauthor1_code TEXT,
-                                    aeauthor2_code TEXT,
-                                    aeauthor3_code TEXT,
-                                    FOREIGN KEY (author_code) REFERENCES authors (author_code)
-                                );"""
-    try:
-        cursor = conn.cursor()
-        cursor.execute(sql_create_authors_table)
-        cursor.execute(sql_create_subject_table)
-        cursor.execute(sql_create_book_table)
-    except sqlite3.Error as e:
-        print(e)
+# Configure logging to write to a file
+logging.basicConfig(level=logging.INFO,  # Set the logging level to INFO or your desired level
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    filename='script.log',  # Specify the name of the log file
+                    filemode='a')  # 'a' appends to the file if it already exists, 'w' would overwrite
 
 def insert_author(conn, author_data):
     """ Insert a new author into the author_author table """
@@ -59,9 +25,9 @@ def insert_author(conn, author_data):
     try:
         cursor.execute(sql, author_data)
         conn.commit()
-        print(f"Inserted author: {author_data[0]} ({author_data[1]})")
+        logging.info(f"Inserted author: {author_data[0]} ({author_data[1]})")
     except sqlite3.Error as e:
-        print(f"Error inserting author: {author_data[0]} ({author_data[1]}) - {e}")
+        logging.error(f"Error inserting author: {author_data[0]} ({author_data[1]}) - {e}")
 
 def insert_subject(conn, subject_data):
     """ Insert a new subject into the subject_subject table """
@@ -70,9 +36,9 @@ def insert_subject(conn, subject_data):
     try:
         cursor.execute(sql, subject_data)
         conn.commit()
-        print(f"Inserted subject: {subject_data[0]} ({subject_data[1]})")
+        logging.info(f"Inserted subject: {subject_data[0]} ({subject_data[1]})")
     except sqlite3.Error as e:
-        print(f"Error inserting subject: {subject_data[0]} ({subject_data[1]}) - {e}")
+        logging.error(f"Error inserting subject: {subject_data[0]} ({subject_data[1]}) - {e}")
 
 def insert_book(conn, book_data):
     """ Insert a new book into the book_book table """
@@ -82,12 +48,12 @@ def insert_book(conn, book_data):
     try:
         cursor.execute(sql, book_data)
         conn.commit()
-        print(f"Inserted book: {book_data[1]} by {book_data[2]}")
+        logging.info(f"Inserted book: {book_data[1]} by {book_data[2]}")
     except sqlite3.Error as e:
-        print(f"Error inserting book: {book_data[1]} by {book_data[2]} - {e}")
+        logging.error(f"Error inserting book: {book_data[1]} by {book_data[2]} - {e}")
 
 def main():
-    database = 'db17.sqlite3'
+    database = 'db18.sqlite3'
     conn = create_connection(database)
     if conn is not None:
         # create_tables(conn)
@@ -100,7 +66,7 @@ def main():
             if subject_name is not None:
                 subject_name = subject_name.text
             else:
-                print("Warning: Subject element not found in tblSubject node")
+                logging.warning("Subject element not found in tblSubject node")
                 continue
             subject_code = subject.find('SubjectCode').text
             subject_data = (subject_name, subject_code)
@@ -140,7 +106,7 @@ def main():
             insert_book(conn, book_data)
         
         conn.close()
-        print("Data insertion completed successfully.")
+        logging.info("Data insertion completed successfully.")
 
 if __name__ == '__main__':
     main()

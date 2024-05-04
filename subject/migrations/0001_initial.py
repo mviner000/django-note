@@ -12,14 +12,14 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Author',
+            name='Subject',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('author_name', models.CharField(max_length=255)),
-                ('author_code', models.CharField(max_length=255, unique=True)),
+                ('subject_name', models.CharField(max_length=255)),
+                ('subject_code', models.CharField(max_length=255, unique=True)),
             ],
             options={
-                'db_table': 'author_author',
+                'db_table': 'subject_subject',
             },
         ),
     ]
