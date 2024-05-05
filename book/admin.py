@@ -2,10 +2,11 @@ from django.contrib import admin
 from .models import Book
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('controlno', 'title', 'author_code', 'edition', 'publisher', 'thumbnail_url')  # Add 'thumbnail_display' to list_display
-    search_fields = ('controlno', 'title', 'author_code__name')  # Assuming 'author_code' has a field named 'name'
-    list_filter = ('author_code',)  # Add 'author_code' to list_filter
-    readonly_fields = ('thumbnail_url',)  # Make 'thumbnail_url' read-only
+    list_display = ('id', 'controlno', 'title', 'author_code')
+    search_fields = ('id', 'controlno', 'title')
+    list_filter = ('author_code',)
+    readonly_fields = ('thumbnail_url',)
+    ordering = ('id',)
 
     def thumbnail_url(self, obj):
         if obj.thumbnail:

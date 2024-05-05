@@ -9,6 +9,6 @@ class AuthorPagination(PageNumberPagination):
     max_page_size = 100
 
 class AuthorViewSet(viewsets.ModelViewSet):
-    queryset = Author.objects.all().order_by('author_name') 
+    queryset = Author.objects.all().order_by('id')
     serializer_class = AuthorSerializer
     pagination_class = AuthorPagination
