@@ -162,5 +162,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 # STATIC_ROOT = '/home/gjclibrary/public_html/static/'
 
-MEDIA_URL = ''
-MEDIA_ROOT = os.path.join(BASE_DIR, '')
+MEDIA_URL = 'assets/book_images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'assets/book_images/')

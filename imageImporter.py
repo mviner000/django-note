@@ -5,7 +5,7 @@ import logging
 from datetime import datetime
 
 # SQLite database path
-DB_PATH = 'db17.sqlite3'
+DB_PATH = 'db19.sqlite3'
 
 # Folder containing images
 IMAGE_FOLDER = 'assets/book_images'
