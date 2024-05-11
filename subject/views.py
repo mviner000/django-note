@@ -84,3 +84,17 @@ class TopSubjectsViewSet(viewsets.ViewSet):
 class SubjectDetailView(generics.RetrieveAPIView):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+
+        # Fetch related books for the subject
+        books = instance.books_subject1.all()  # Use the related_name 'books_subject1' here
+        book_serializer = BookSerializer(books, many=True)
+
+        # Append books data to the subject serializer response
+        data = serializer.data
+        data['books'] = book_serializer.data
+
+        return Response(data)
