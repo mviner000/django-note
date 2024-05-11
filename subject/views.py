@@ -2,6 +2,10 @@ from rest_framework import viewsets, serializers, pagination
 from rest_framework.response import Response
 from book.models import Book
 from book.serializers import BookSerializer
+from .serializers import TopSubjectsSerializer
+from rest_framework import generics
+from .models import Subject
+from .serializers import SubjectSerializer
 
 class BooksBySubjectSerializer(serializers.Serializer):
     subject_name = serializers.CharField()
@@ -41,3 +45,42 @@ class BooksBySubjectViewSet(viewsets.ViewSet):
             serialized_data.append(serializer.data)
 
         return paginator.get_paginated_response(serialized_data)
+
+class TopSubjectsViewSet(viewsets.ViewSet):
+    def list(self, request):
+        # Calculate the number of books per subject
+        subjects_books_count = {}
+
+        books = Book.objects.select_related('subject1_code').all()
+
+        for book in books:
+            subject_id = book.subject1_code.id  # Assuming 'id' is the subject's unique identifier
+            subject_name = book.subject1_code.subject_name
+            if subject_name not in subjects_books_count:
+                subjects_books_count[subject_name] = {
+                    'id': subject_id,
+                    'count': 0
+                }
+            subjects_books_count[subject_name]['count'] += 1
+
+        # Sort subjects by the number of books in descending order
+        sorted_subjects = sorted(subjects_books_count.items(), key=lambda x: x[1]['count'], reverse=True)
+
+        # Get top 10 subjects (or less if less than 10 subjects exist)
+        top_subjects = sorted_subjects[:10]
+
+        # Serialize the top subjects
+        serialized_data = []
+        for subject_name, data in top_subjects:
+            serializer = TopSubjectsSerializer({
+                'id': data['id'],
+                'subject_name': subject_name,
+                'book_count': data['count']
+            })
+            serialized_data.append(serializer.data)
+
+        return Response(serialized_data)
+    
+class SubjectDetailView(generics.RetrieveAPIView):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
