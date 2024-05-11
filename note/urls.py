@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/', include('notes.urls')),
     path('api/', include('book.urls')),
     path('api/', include('author.urls')),
+    path('api/', include('subject.urls')),
     # Add a direct route to the book list page
     path('', book_list, name='book_list'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
