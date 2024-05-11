@@ -1,3 +1,4 @@
+from django.db.models import Count
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from .models import Author
@@ -9,6 +10,6 @@ class AuthorPagination(PageNumberPagination):
     max_page_size = 100
 
 class AuthorViewSet(viewsets.ModelViewSet):
-    queryset = Author.objects.all().order_by('id')
+    queryset = Author.objects.annotate(book_count=Count('books')).order_by('-book_count', 'id')
     serializer_class = AuthorSerializer
     pagination_class = AuthorPagination
