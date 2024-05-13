@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'notes',
     'author',
+    'bookcart',
     'subject',
     'book',
 ]
