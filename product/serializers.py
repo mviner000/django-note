@@ -9,10 +9,11 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'barcode', 'grocery_price',
-                  'selling_price', 'stock_quantity', 'image', 'image_url',
+                  'selling_price', 'stock_quantity', 'image_url',
                   'available', 'created_at', 'updated_at']
 
-    def get_image_url(self, obj):
+    def get_image_url(self, obj: Product) -> str:
         if obj.image:
-            return obj.image.url
+            # Remove the "image/upload/" part from the URL
+            return obj.image.url.replace("image/upload/", "", 1)
         return None

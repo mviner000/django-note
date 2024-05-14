@@ -10,8 +10,11 @@ DB_PATH = 'db19.sqlite3'
 # Folder containing images
 IMAGE_FOLDER = 'assets/book_images'
 
+# Cloudinary URL prefix
+CLOUDINARY_URL_PREFIX = 'https://res.cloudinary.com/dqpzvvd0v/image/upload/v1715680501/books/'
+
 # Setup logging
-logging.basicConfig(filename='imageImporter.log', level=logging.INFO,
+logging.basicConfig(filename='imageImporterToCloudinary.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 def update_database_with_image_info():
@@ -40,8 +43,8 @@ def update_database_with_image_info():
                     # Get image dimensions
                     width, height = img.size
 
-                    # Update database record with image info
-                    thumbnail_url = f"{filename}"
+                    # Construct Cloudinary thumbnail URL
+                    thumbnail_url = f"{CLOUDINARY_URL_PREFIX}{filename}"
                     thumbnail_width = width
                     thumbnail_height = height
 
