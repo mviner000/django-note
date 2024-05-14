@@ -29,6 +29,8 @@ urlpatterns = [
     path('api/', include('author.urls')),
     path('api/', include('subject.urls')),
     path('api/', include('bookcart.urls')),
+    path('api/', include('shop.urls')),
+    path('api/', include('product.urls')),
     # Add a direct route to the book list page
     path('', book_list, name='book_list'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
