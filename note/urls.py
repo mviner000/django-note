@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/', include('bookcart.urls')),
     path('api/', include('shop.urls')),
     path('api/', include('product.urls')),
+    path('api/', include('restock.urls')),
     # Add a direct route to the book list page
     path('', book_list, name='book_list'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \

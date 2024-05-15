@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'author',
     'bookcart',
     'product',
+    'restock',
     'shop',
     'subject',
 ]
