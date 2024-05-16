@@ -8,5 +8,8 @@ router.register(r'unverified-bookcarts', BookCartListViewSet, basename='unverifi
 
 
 urlpatterns = [
+    
     path('', include(router.urls)),
+    path('bookcarts/', include(router.urls)),
+    path('bookcarts/<int:pk>/', BookCartViewSet.as_view({'delete': 'destroy'}), name='bookcart-delete'),
 ]
