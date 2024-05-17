@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 import os
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Book
@@ -10,11 +13,45 @@ class BookPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 100
+    cursor_query_param = 'cursor'
+
+    def paginate_queryset(self, queryset, request, view=None):
+        cursor = request.query_params.get('cursor')
+        if cursor:
+            queryset = queryset.filter(id__gt=cursor)
+        return super().paginate_queryset(queryset, request, view)
+        
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.select_related('author_code', 'subject1_code').all().order_by('id')
     serializer_class = BookSerializer
     pagination_class = BookPagination
+
+    def list(self, request):
+        cursor = request.query_params.get('cursor')
+        if cursor:
+            queryset = self.queryset.filter(id__gt=cursor)
+        else:
+            queryset = self.queryset
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    @action(methods=['get'], detail=False)
+    def search(self, request):
+        query = request.query_params.get('q')
+        if query:
+            books = Book.objects.filter(
+                Q(title__icontains=query) |
+                Q(author_code__author_name__icontains=query) |
+                Q(subject1_code__subject_name__icontains=query)
+            )
+            serializer = BookSerializer(books, many=True)
+            return Response(serializer.data)
+        return Response([])
 
 def api_view(request):
     # Retrieve HOSTNAME from environment variables

@@ -10,4 +10,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('books/list/', api_view, name='api'),
     path('book/<int:book_id>/', book_detail, name='book_detail'),
+    path('books/search/', BookViewSet.as_view({'get': 'search'}), name='book_search'),
 ]
