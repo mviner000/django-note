@@ -5,6 +5,7 @@ from cloudinary.uploader import upload
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'author_code')
+    search_fields = ('title',)
 
     def save_model(self, request, obj, form, change):
         # Get the uploaded image file from the form data

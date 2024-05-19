@@ -27,6 +27,8 @@ class Book(models.Model):
     #thumbnail_url = models.ImageField(upload_to='book_thumbnails/', blank=True, null=True)
     thumbnail_width = models.PositiveIntegerField(blank=True, null=True)
     thumbnail_height = models.PositiveIntegerField(blank=True, null=True)
+    views = models.PositiveIntegerField(default=0)
+    stock_quantity = models.PositiveIntegerField(default=1)
 
     class Meta:
         db_table = 'book_book'

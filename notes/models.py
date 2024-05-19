@@ -8,6 +8,7 @@ class Note(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_by = models.CharField(max_length=100, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    views = models.PositiveIntegerField(default=0)
+    
     def __str__(self):
         return self.title

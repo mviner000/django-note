@@ -14,6 +14,13 @@ class BookCartViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
+
+        # Check if the borrowing is being verified
+        if request.data.get('is_borrowed_verified', False):
+            for book in instance.books.all():
+                book.stock_quantity -= 1
+                book.save()
+                
         serializer.save()
         return Response(serializer.data)
 

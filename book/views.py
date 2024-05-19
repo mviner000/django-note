@@ -8,6 +8,13 @@ from rest_framework.pagination import PageNumberPagination
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Book
 from .serializers import BookSerializer
+import logging
+logger = logging.getLogger('note')
+
+from django.db.models import F
+from rest_framework.response import Response
+
+from rest_framework import status
 
 class BookPagination(PageNumberPagination):
     page_size = 10
@@ -52,6 +59,19 @@ class BookViewSet(viewsets.ModelViewSet):
             serializer = BookSerializer(books, many=True)
             return Response(serializer.data)
         return Response([])
+    
+    def get(self, request, book_id):
+        book = get_object_or_404(Book, pk=book_id)
+        book.views += 1
+        book.save()
+        serializer = BookSerializer(book)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        Book.objects.filter(pk=instance.pk).update(views=F('views') + 1)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 def api_view(request):
     # Retrieve HOSTNAME from environment variables
