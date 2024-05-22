@@ -48,6 +48,12 @@ class BookViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
     
     @action(methods=['get'], detail=False)
+    def all_books(self, request):
+        queryset = self.queryset
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    @action(methods=['get'], detail=False)
     def search(self, request):
         query = request.query_params.get('q')
         if query:
