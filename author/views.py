@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from .models import Author
 from .serializers import AuthorSerializer
+from rest_framework.exceptions import NotFound
 
 class AuthorPagination(PageNumberPagination):
     page_size = 10
@@ -25,4 +26,14 @@ class AuthorViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(top_authors, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['get'], url_path='detail')
+    def detail(self, request, pk=None):
+        try:
+            author = self.get_queryset().get(pk=pk)
+        except Author.DoesNotExist:
+            raise NotFound(detail="Author not found.")
+
+        serializer = self.get_serializer(author)
         return Response(serializer.data)
