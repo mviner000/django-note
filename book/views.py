@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Book
-from .serializers import BookSerializer
+from .serializers import BookSerializer, BookListSerializer
 import logging
 logger = logging.getLogger('note')
 
@@ -50,7 +50,7 @@ class BookViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], detail=False)
     def all_books(self, request):
         queryset = self.queryset
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = BookListSerializer(queryset, many=True)
         return Response(serializer.data)
     
     @action(methods=['get'], detail=False)
@@ -62,7 +62,7 @@ class BookViewSet(viewsets.ModelViewSet):
                 Q(author_code__author_name__icontains=query) |
                 Q(subject1_code__subject_name__icontains=query)
             )
-            serializer = BookSerializer(books, many=True)
+            serializer = BookListSerializer(books, many=True)
             return Response(serializer.data)
         return Response([])
     

@@ -30,3 +30,21 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ['controlno', 'id', 'title', 'copyright',  'author_code', 'author_name', 'subject1_code', 'subject_name', 'thumbnail_url', 'publisher', 'pubplace', 'pagination', 'edition', 'views', 'stock_quantity']
+
+
+class BookListSerializer(serializers.ModelSerializer):
+    thumbnail_url = serializers.SerializerMethodField()
+    author_name = serializers.SerializerMethodField()
+
+    def get_author_name(self, obj: Book) -> str:
+        return obj.author_code.author_name
+
+    def get_thumbnail_url(self, obj: Book) -> str:
+        if obj.thumbnail_url:
+            # Remove the "image/upload/" part from the URL
+            return obj.thumbnail_url.url.replace("image/upload/", "", 1)
+        return None
+
+    class Meta:
+        model = Book
+        fields = ['id', 'controlno', 'author_name', 'title', 'thumbnail_url']
