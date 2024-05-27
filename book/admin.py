@@ -37,5 +37,8 @@ class BookAdmin(admin.ModelAdmin):
         # Save the model instance (Book) with the updated image URL
         super().save_model(request, obj, form, change)
 
+    # Exclude image_url field from editable fields
+    exclude = ('image_url',)
+
 # Register the Book model with the custom admin class
 admin.site.register(Book, BookAdmin)

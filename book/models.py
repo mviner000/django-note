@@ -1,5 +1,7 @@
 from django.db import models
 from cloudinary.models import CloudinaryField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from author.models import Author
 from subject.models import Subject
 
@@ -24,7 +26,7 @@ class Book(models.Model):
     aeauthor3_code = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=True, related_name='aeauthor3_books', db_column='aeauthor3_code')
     allno = models.CharField(max_length=255, blank=True, null=True)
     thumbnail_url = CloudinaryField('image', folder='books', blank=True, null=True)
-    #thumbnail_url = models.ImageField(upload_to='book_thumbnails/', blank=True, null=True)
+    image_url = models.CharField(max_length=255, blank=True, null=True)
     thumbnail_width = models.PositiveIntegerField(blank=True, null=True)
     thumbnail_height = models.PositiveIntegerField(blank=True, null=True)
     views = models.PositiveIntegerField(default=0)
@@ -32,3 +34,10 @@ class Book(models.Model):
 
     class Meta:
         db_table = 'book_book'
+
+# Signal receiver to copy thumbnail_url to image_url after saving
+@receiver(post_save, sender=Book)
+def copy_thumbnail_to_image_url(sender, instance, **kwargs):
+    if kwargs.get('created') or kwargs.get('update_fields'):
+        instance.image_url = instance.thumbnail_url
+        instance.save(update_fields=['image_url'])

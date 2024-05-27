@@ -8,6 +8,11 @@ from rest_framework.pagination import PageNumberPagination
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .models import Book
 from .serializers import BookSerializer, BookListSerializer
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .search_books import search_books
+
 import logging
 logger = logging.getLogger('note')
 
@@ -53,19 +58,6 @@ class BookViewSet(viewsets.ModelViewSet):
         serializer = BookListSerializer(queryset, many=True)
         return Response(serializer.data)
     
-    @action(methods=['get'], detail=False)
-    def search(self, request):
-        query = request.query_params.get('q')
-        if query:
-            books = Book.objects.filter(
-                Q(title__icontains=query) |
-                Q(author_code__author_name__icontains=query) |
-                Q(subject1_code__subject_name__icontains=query)
-            )
-            serializer = BookListSerializer(books, many=True)
-            return Response(serializer.data)
-        return Response([])
-    
     def get(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
         book.views += 1
@@ -109,3 +101,16 @@ def book_list(request):
         books = paginator.page(paginator.num_pages)
 
     return render(request, 'index.html', {'books': books})
+
+
+class SearchBooksAPI(APIView):
+    def get(self, request):
+        query = request.query_params.get('query', '')
+        if query:
+            books = search_books(query)
+            if books:
+                return Response({'success': True, 'results': books})
+            else:
+                return Response({'success': False, 'message': 'An error occurred while searching.'}, status=500)
+        else:
+            return Response({'success': False, 'message': 'No search query provided.'}, status=400)
